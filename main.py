@@ -1,8 +1,11 @@
 from methods import *
+import sqlalchemy
 import pandas as pd
 
 
 pipeline_statuses_list = list(get_pipeline_statuses_dict().keys())
+pipeline_statuses_dict = get_pipeline_statuses_dict()
+
 leads_url_filters_by_status_id = get_leads_url_filters_by_status_id(pipeline_statuses_list)
 df_columns = [
     'lead_id',
@@ -96,4 +99,25 @@ try:
 except Exception as e:
     print(e)
 
+df['lead_created_at'] = pd.to_datetime(df['lead_created_at'], unit='s')
+df['lead_created_at'] = df['lead_created_at'].dt.strftime('%Y-%m-%d')
+
+df['lead_updated_at'] = pd.to_datetime(df['lead_updated_at'], unit='s')
+df['lead_updated_at'] = df['lead_updated_at'].dt.strftime('%Y-%m-%d')
+
+df['lead_closed_at'] = pd.to_datetime(df['lead_closed_at'], unit='s')
+df['lead_closed_at'] = df['lead_closed_at'].dt.strftime('%Y-%m-%d')
+
+df['lead_link'] = 'https://advaga.amocrm.ru/leads/detail/' + df['lead_id'].astype(str)
+
 df.to_csv(f'assets/leads.csv', index=False)
+
+
+# df = pd.read_csv('assets/leads.csv')
+# table_name = 'sales_leads'
+# engine = sqlalchemy.create_engine("mariadb+mariadbconnector://all:yaro1997dobrg*M@localhost:3306/amoCRM")
+# inspector = sqlalchemy.inspect(engine)
+# if not inspector.has_table(table_name):
+#     df.head(0).to_sql(table_name, engine, if_exists='replace', index=False)
+# df.to_sql(table_name, engine, if_exists='replace', index=False)
+# print(f'{table_name} loaded to database')

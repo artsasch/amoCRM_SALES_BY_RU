@@ -1,2 +1,1 @@
-start "" /MIN python "path to .py file"
-exit
+cd C:\Users\Administrator\Desktop\amoCRM_SALES_BY_RU && python main.py
