@@ -7,7 +7,6 @@ with open('assets/leads.json', 'r') as json_file:
     leads = json.load(json_file)['_embedded']['leads']
 
 
-pipeline_statuses_dict = get_pipeline_statuses_dict()
 df_columns = [
     'lead_id',
     'lead_name',
@@ -19,7 +18,7 @@ df_columns = [
     'custom_field_lead_pm'
 ]
 df = pd.DataFrame(columns=df_columns)
-
+pipeline_statuses_dict = get_pipeline_statuses_dict()
 
 
 for lead in leads:
